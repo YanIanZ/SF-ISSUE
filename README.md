@@ -26,7 +26,10 @@ maintained by **iYanZ**.
 | 🪝 Gadget | **Grappling Hook** — fixed on Folia + fall-damage immunity now actually works. |
 | 🖥️ UX | **Per-machine status holograms** (`⚙ Crafting X%` / `⛔ Not enough energy`), toggleable. |
 | ⏱️ UX | **Crafting-time** shown on every machine recipe in the guide. |
-| 📖 Guide | **Favorites** (Shift+Right-Click), **Craftable-now**, and **Recently-Viewed** views. |
+| 📖 Guide | **Favorites** (Shift+Right-Click), **Craftable-now**, **Recently-Viewed**, and **Research-Progress** views. |
+| 🧪 Guide | **Research Progress** screen — overall completion + per-category bars. |
+| 🔎 HUD | **Automatic context HUD** — action-bar info for the block you look at / item you hold (`/sf hud`). |
+| 🛠️ Admin | **`/sf admin` panel** — online-player skin heads → unlock/reset research, give guide, teleport, stats. |
 | 🎨 Colors | 100% hex MiniMessage — no legacy `§`/`&` codes anywhere. |
 | 🧵 Platform | Fully **Folia-safe** (region-scheduled world/entity/inventory access) on Paper 26.2. |
 

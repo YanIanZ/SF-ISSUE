@@ -18,11 +18,14 @@ This is the **official v5.0** build of this Slimefun fork, targeting **Paper API
    - [Grappling Hook (fixed)](#grappling-hook-fixed)
 2. [Quality-of-life & UX](#2-quality-of-life--ux)
    - [Guide: Favorites, Craftable, Recently-Viewed](#guide-favorites-craftable-recently-viewed)
+   - [Guide: Research Progress screen](#guide-research-progress-screen)
+   - [Context HUD (action bar)](#context-hud-action-bar)
    - [Crafting-time in recipes](#crafting-time-in-recipes)
    - [Per-machine status holograms](#per-machine-status-holograms)
-3. [Configuration](#3-configuration)
-4. [Admin / build notes](#4-admin--build-notes)
-5. [Changelog — fixes](#5-changelog--fixes)
+3. [Admin Panel (`/sf admin`)](#25-admin-panel-sf-admin)
+4. [Configuration](#3-configuration)
+5. [Admin / build notes](#4-admin--build-notes)
+6. [Changelog — fixes](#5-changelog--fixes)
 
 ---
 
@@ -103,7 +106,27 @@ The Slimefun Guide gained a header toolbar and three views:
   for** float to the top (with a "have materials" badge).
 - **🕓 Recently-Viewed** — the last 18 items you looked at, most-recent first.
 
-Header slots: `menu/back · favorites (+count) · recently-viewed · craftable · search · wiki`.
+Header slots: `menu/back · favorites (+count) · recently-viewed · progress · craftable · search · wiki`.
+
+### Guide: Research Progress screen
+
+A new **🧪 Research Progress** button in the guide header (XP-bottle icon) opens a screen showing:
+
+- **Overall:** `Research: X / Y unlocked (Z%)` with a 10-segment bar (`███░░░░░░░`).
+- **Per category:** every item group with its own `unlocked / total (%)` + mini bar — so you can see
+  exactly where your progression stands.
+
+### Context HUD (action bar)
+
+An **automatic action-bar HUD** shows contextual info as you play — no command needed:
+
+- **Look at a Slimefun block/machine** → its name, and its energy (`⚡ charge / capacity J`) if it
+  stores power.
+- **Hold a Slimefun item** → its name, and its charge if it's rechargeable.
+- **Nothing relevant** → the HUD stays empty (no spam).
+
+Toggle it for yourself with **`/sf hud`**; server owners can disable it globally — see
+[Configuration](#3-configuration). It's Folia-safe (each player's HUD runs on their own region).
 
 ### Crafting-time in recipes
 
@@ -121,6 +144,19 @@ Electric machines now float a **status hologram** above themselves:
 Updates are Folia-safe and only re-drawn when the text changes, so idle machines cost nothing.
 Server owners can turn this off — see [Configuration](#3-configuration).
 
+### 2.5 Admin Panel (`/sf admin`)
+
+A management GUI for staff (permission `slimefun.command.admin`, default op).
+
+- Run **`/sf admin`** to open a grid of **online players shown as their skin heads** (each head lists
+  gamemode + health).
+- **Click a player** to open their action menu:
+  - **Unlock all research** / **Reset all research**
+  - **Give Slimefun Guide**
+  - **Teleport to player** (Folia-safe `teleportAsync`)
+  - **View stats** (research progress)
+  - Back to the list
+
 ---
 
 ## 3. Configuration
@@ -130,6 +166,7 @@ New / notable options in `config.yml` under `options:`:
 | Option | Default | Meaning |
 |--------|---------|---------|
 | `machine-holograms` | `true` | Floating status holograms above electric machines. Set `false` to disable (e.g. for performance on very large machine farms). |
+| `hud-enabled` | `true` | The automatic context HUD (looked-at block / held item). Players can also toggle it for themselves with `/sf hud`. |
 | `auto-update` | `false` | Auto-updater. Disabled by default on this fork — it is wired to a custom update server that is not yet enabled, so it never phones home. |
 
 Metrics/analytics are **off** on this build (it is a custom fork, not an upstream Slimefun build), so
