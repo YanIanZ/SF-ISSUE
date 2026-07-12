@@ -1,8 +1,8 @@
-# Slimefun v5.0 — Feature Guide & Changelog
+# Slimefun v5.1 — Feature Guide & Changelog
 
-This is the **official v5.0** build of this Slimefun fork, targeting **Paper API 26.2** and
+This is the **official v5.1** build of this Slimefun fork, targeting **Paper API 26.2** and
 **Folia** (tested on SourbyCraft / Luminol 26.2). Everything below is bundled in
-`Slimefun-v5.0.jar`.
+`Slimefun-v5.1.jar`.
 
 - **Colors:** 100% hex MiniMessage (`<#RRGGBB>`) — no legacy `§`/`&` codes anywhere.
 - **Folia-safe:** every world/entity/inventory operation runs on the region that owns it.
@@ -15,18 +15,21 @@ This is the **official v5.0** build of this Slimefun fork, targeting **Paper API
 1. [New machines & gadgets](#1-new-machines--gadgets)
    - [Auto-Fisher](#auto-fisher)
    - [Mystery Box](#mystery-box)
-   - [Grappling Hook (fixed)](#grappling-hook-fixed)
+   - [Grappling Hook (reworked in v5.1)](#grappling-hook-reworked-in-v51)
    - [Prospector's Ore Scanner](#prospectors-ore-scanner)
+   - [Cooking Station & Buff Dishes](#cooking-station--buff-dishes)
 2. [Quality-of-life & UX](#2-quality-of-life--ux)
    - [Guide: Favorites, Craftable, Recently-Viewed](#guide-favorites-craftable-recently-viewed)
    - [Guide: Research Progress screen](#guide-research-progress-screen)
    - [Context HUD (action bar + boss bar)](#context-hud-action-bar--boss-bar)
    - [Crafting-time in recipes](#crafting-time-in-recipes)
    - [Per-machine status holograms](#per-machine-status-holograms)
+   - [Startup banner (v5.1)](#startup-banner-v51)
 3. [Admin Panel (`/sf admin`)](#25-admin-panel-sf-admin)
-4. [Configuration](#3-configuration)
-5. [Admin / build notes](#4-admin--build-notes)
-6. [Changelog — fixes](#5-changelog--fixes)
+4. [Resource pack (SlimefunPack-v5.1)](#3-resource-pack-slimefunpack-v51)
+5. [Configuration](#4-configuration)
+6. [Admin / build notes](#5-admin--build-notes)
+7. [Changelog — fixes](#6-changelog--fixes)
 
 ---
 
@@ -79,10 +82,10 @@ A **placed, non-electric magical block** — a slot-machine you feed keys.
 
 ---
 
-### Grappling Hook (fixed)
+### Grappling Hook (reworked in v5.1)
 
-The classic Slimefun **Grappling Hook** now works correctly on Folia — and actually protects you
-from fall damage.
+The classic Slimefun **Grappling Hook** works correctly on Folia, protects you from fall damage —
+and as of **v5.1 it is a reusable fishing-rod tool**.
 
 **How to use**
 1. Hold the Grappling Hook and **right-click** to fire an arrow.
@@ -90,8 +93,19 @@ from fall damage.
    longer shots launch you in an arc.
 3. On landing you get **fall-damage immunity** for a few seconds, so grappling up cliffs is safe.
 
-> Fixed this release: the hook previously crash-spammed the console on Folia (entity work ran on the
-> wrong region) and its fall-damage immunity never actually triggered. Both are resolved.
+**v5.1 rework**
+- The item is now a **fishing rod** (was a lead) and is **reusable**: `consume-on-use` defaults to
+  `false`, so the hook is never eaten on use. (Set `consume-on-use: true` in the item's settings to
+  restore the old consumable behaviour.)
+- **No more lead drops:** the hook's visual leash (a bat leashed to the arrow) dropped a *lead item*
+  on the ground when the leash broke — vanilla behaviour, now suppressed for grappling bats only.
+- **No more item loss:** grappling into open air (arrow never lands) used to delete a consumed hook
+  forever; the despawn path now returns it.
+- `despawn-seconds` is honoured as **seconds** (it was scheduled as ticks — hooks despawned 20× early).
+- Quitting mid-grapple cleans up the arrow + bat (an invisible, invulnerable bat used to linger).
+
+> Fixed in v5.0: the hook crash-spammed the console on Folia (entity work ran on the wrong region)
+> and its fall-damage immunity never actually triggered. Both resolved.
 
 ### Prospector's Ore Scanner
 
@@ -108,6 +122,28 @@ A rechargeable exploration tool that finds ores for you — no digging blind.
 Each scan costs a little charge and has a short cooldown. The scan radius is a per-item setting
 (default 8, up to 12). Works for all ores — including deepslate and nether variants and ancient
 debris (which merge into one tally line each).
+
+---
+
+### Cooking Station & Buff Dishes
+
+An **electric kitchen machine** (buffer 512 J, 10 J/tick) that combines two food ingredients into a
+**Dish** that grants potion buffs when eaten. Research **"Cooking"** to unlock the station and all
+four dishes.
+
+**How to use**
+1. Place the Cooking Station (a smoker) and power it from an energy network.
+2. Put the two ingredients of a recipe into the input slots — it cooks for ~10 s per dish.
+3. Eat the dish: it restores hunger **and** applies its buffs.
+
+| Dish | Ingredients | Hunger | Buffs |
+|------|-------------|--------|-------|
+| **Hearty Roast** | Cooked Beef + Carrot | 6 | Regeneration II (5 s) |
+| **Spicy Wings** | Cooked Chicken + Nether Wart | 4 | Fire Resistance (15 s) + Speed (10 s) |
+| **Golden Feast** | Golden Carrot + Cooked Porkchop | 6 | Absorption II (30 s) + Strength (15 s) |
+| **Fisherman's Platter** | Cooked Salmon + Kelp | 5 | Water Breathing + Night Vision (30 s each) |
+
+The guide shows each recipe as ingredient → dish pairs, with the usual crafting-time line.
 
 ---
 
@@ -164,22 +200,59 @@ Electric machines now float a **status hologram** above themselves:
 Updates are Folia-safe and only re-drawn when the text changes, so idle machines cost nothing.
 Server owners can turn this off — see [Configuration](#3-configuration).
 
+### Startup banner (v5.1)
+
+The console boot sequence got a facelift:
+
+- A **gradient ASCII "Slimefun" banner** prints at startup with the version, build branch
+  (official) and the **detected platform — Paper or Folia — plus the Minecraft version**.
+- The post-load summary is a clean, colored block: platform line, **item / research counts**, and
+  the project links.
+- Platform detection is now accurate (see the v5.1 changelog — `isFolia()` used to report Folia on
+  every modern Paper server).
+
 ### 2.5 Admin Panel (`/sf admin`)
 
 A management GUI for staff (permission `slimefun.command.admin`, default op).
 
-- Run **`/sf admin`** to open a grid of **online players shown as their skin heads** (each head lists
-  gamemode + health).
+- Run **`/sf admin`** to open a **paginated, name-sorted** grid of online players shown as their
+  **skin heads** (prev/next buttons appear when there are more than 27 players — added in v5.1).
 - **Click a player** to open their action menu:
   - **Unlock all research** / **Reset all research**
   - **Give Slimefun Guide**
   - **Teleport to player** (Folia-safe `teleportAsync`)
   - **View stats** (research progress)
   - Back to the list
+- v5.1: every action sends the admin a **confirmation message**, and actions on a player who just
+  logged out are refused with a clear "no longer online" notice (instead of acting on a ghost).
 
 ---
 
-## 3. Configuration
+## 3. Resource pack (SlimefunPack-v5.1)
+
+The optional **SlimefunPack-v5.1.zip** gives the nine v5.0/v5.1 items custom textures: Auto-Fisher,
+Mystery Box, Mystery Key, Ore Scanner, Cooking Station, and the four dishes.
+
+**How it works** — Slimefun stamps each item with a **CustomModelData** value (from
+`plugins/Slimefun/item-models.yml`); the pack uses Minecraft's modern item-model definitions
+(`assets/minecraft/items/<base>.json`, `range_dispatch` on `custom_model_data`) so only items
+carrying the matching value render the custom model. Vanilla items are untouched — the fallbacks are
+copied **verbatim from the 1.21.11 client jar**, so special renderers (ender chest, spyglass-in-hand)
+keep working.
+
+**Install (two steps)**
+1. Enable the pack on the client (drop the zip into `resourcepacks/` — or host it and set
+   `resource-pack:` in `server.properties`).
+2. Merge the CustomModelData values (5001–5009, shipped as `item-models.yml.snippet` inside the
+   pack) into `plugins/Slimefun/item-models.yml`, then restart.
+
+Targets **pack_format 75** (MC 1.21.11 / SourbyCraft 26.2), with a permissive `supported_formats`
+range of 64–99. The textures are generated 16×16 sprites — replace the PNGs under
+`assets/slimefun/textures/item/` (same file names) to use your own art.
+
+---
+
+## 4. Configuration
 
 New / notable options in `config.yml` under `options:`:
 
@@ -195,21 +268,64 @@ there is no bStats phone-home.
 
 ---
 
-## 4. Admin / build notes
+## 5. Admin / build notes
 
 - **Requires** `folia-supported: true` (already set in `plugin.yml`). Runs on Paper 26.2 and Folia
   forks (Luminol / SourbyCraft 26.2).
-- **Version reporting:** a clean release version (e.g. `5.0`) is recognised as an **official custom
+- **Version reporting:** a clean release version (e.g. `5.1`) is recognised as an **official custom
   build** — no "unofficially modified build" warning — but it is **not** an upstream build, so it
   never contacts upstream metrics or the upstream auto-updater.
 - **Skins:** player-head textures (item and block heads) use the Bukkit `PlayerProfile` /
   `Skull#setOwnerProfile` API — no NMS, mapping-independent, Folia-safe.
 - **Build:** `./gradlew clean build` (Java, Gradle Kotlin DSL); the SuDo library is consumed from
-  mavenLocal and shaded/relocated into the jar. Deployable artifact: `build/libs/Slimefun-v5.0.jar`.
+  mavenLocal and shaded/relocated into the jar. Deployable artifact: `build/libs/Slimefun-v5.1.jar`.
 
 ---
 
-## 5. Changelog — fixes
+## 6. Changelog — fixes
+
+### v5.1 — full-feature audit (Paper + Folia)
+
+Three parallel deep audits swept every new feature and the Paper/Folia scheduling layer; 20+ bugs
+found and fixed:
+
+**Critical**
+- **Mystery Box was non-functional:** its input/output slots were "preset" slots — the decorative
+  panes were cloned into every menu, so the key could never be inserted, and breaking the box
+  dropped UI panes as real items. Fixed; the box now works as designed.
+- **Folia thread-safety:** four maps shared across region threads (open-menu registry, per-menu
+  click handlers, hologram cache, bow projectiles) were plain HashMaps → now concurrent. These
+  could corrupt silently under load on Folia.
+- **Folia detection was wrong (SuDo):** `isFolia()` probed a scheduler class that plain Paper has
+  shipped since 1.20.1 — every modern Paper server was treated as Folia. Now probes a
+  Folia-exclusive class; plain Paper uses the straight Bukkit scheduler again.
+
+**Important**
+- Breaking a machine **mid-craft silently deleted the consumed ingredients** — the in-flight
+  recipe's results now drop with the block (all AContainer machines, incl. Cooking Station).
+- A machine whose block inventory failed to load NPE'd every tick until the error-reporter
+  **destroyed the machine and its contents** — now skipped safely; the errored-block terminator
+  also ran on the wrong thread on Folia (block never cleared).
+- The **shutdown block-data flush** could silently no-op if a ticker cycle was mid-flight →
+  bounded-wait flush; ticker state flags made volatile.
+- **Guide "Craftable now"** re-scanned the player's whole inventory O(n log n) times per click
+  (inside the sort comparator) → evaluated once per item.
+- **Favorites / recently-viewed** did a synchronous full-YAML disk write on every guide click →
+  now dirty-flagged and saved with the profile (auto-save/logout).
+- **Admin panel** actions held live Player references from when the GUI was built — acting on a
+  player who logged out lost items / teleported to ghosts. Handlers now re-resolve by UUID.
+- **HUD boss bars** stuck frozen on players' screens through `/reload` (now hidden on disable and
+  on runtime toggle-off); identical action-bar resends halved.
+- SuDo entity-scheduled tasks were **silently dropped** when the entity was removed first (now run
+  their cleanup anyway, matching Paper semantics), and `runAtLocation`/`runAtEntity` returned fake
+  task handles (no-op cancel).
+
+**Minor**
+- Ore Scanner cooldown map grew forever (now pruned) · Cooking Station guide columns misaligned
+  (now strict pairs) · ticker enable/disable race could permanently stop a machine ticking (atomic
+  now) · version parser accepted junk like `R0.1-SNAPSHOT` · `InvUtils.hasEmptySlot` was inverted.
+
+### v5.0 line
 
 Everything fixed in the v5.0 line:
 

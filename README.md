@@ -1,6 +1,6 @@
 # SF-ISSUE — Slimefun (Paper 26.2 + Folia) fork · Docs & Design Hub
 
-Documentation, feature guides, and design docs for the **official v5.0** build of this Slimefun
+Documentation, feature guides, and design docs for the **official v5.1** build of this Slimefun
 fork — targeting **Paper API 26.2** and **Folia** (tested on SourbyCraft / Luminol 26.2),
 maintained by **iYanZ**.
 
@@ -11,13 +11,13 @@ maintained by **iYanZ**.
 
 ## 📘 Start here
 
-- **[Slimefun v5.0 — Feature Guide & Usage](docs/SLIMEFUN-v5.0-GUIDE.md)** — every new feature, how to
+- **[Slimefun v5.1 — Feature Guide & Usage](docs/SLIMEFUN-v5.1-GUIDE.md)** — every new feature, how to
   use it, config options, and the full fix changelog.
 - **[Folia notes](docs/FOLIA.md)** — Folia region-safety rules this fork follows.
 
 ---
 
-## ✨ What's new in v5.0 (highlights)
+## ✨ What's new in v5.1 (highlights)
 
 | Area | Update |
 |------|--------|
@@ -28,6 +28,11 @@ maintained by **iYanZ**.
 | 🖥️ UX | **Per-machine status holograms** (`⚙ Crafting X%` / `⛔ Not enough energy`), toggleable. |
 | ⏱️ UX | **Crafting-time** shown on every machine recipe in the guide. |
 | 📖 Guide | **Favorites** (Shift+Right-Click), **Craftable-now**, **Recently-Viewed**, and **Research-Progress** views. |
+| 🍲 New machine | **Cooking Station** — combines two ingredients into **buff dishes** (Regeneration, Fire Res + Speed, Absorption + Strength, Water Breathing + Night Vision). |
+| 🎨 Resource pack | **SlimefunPack-v5.1.zip** — custom textures for the 9 new items via CustomModelData (pack_format 75, MC 1.21.11), vanilla-exact fallbacks. |
+| 🪝 Rework | **Grappling Hook** is now a reusable **fishing rod** — never consumed, no lead litter, no item loss, despawn timing fixed. |
+| 🛡️ Stability | **v5.1 audit wave:** 20+ bugs fixed — non-functional Mystery Box, Folia thread-safety (menus/holograms/bows), mid-craft item loss, shutdown data flush, HUD bar leaks, admin ghost-actions, correct Paper/Folia detection. |
+| 🖥️ Console | **Gradient startup banner** + rebuilt summary: version · official · **Paper/Folia** + MC version, item/research counts. |
 | 🧪 Guide | **Research Progress** screen — overall completion + per-category bars. |
 | 🔎 HUD | **Automatic context HUD** — a **boss bar** (charge + crafting %) for the machine you look at, action-bar info for other blocks / held items (`/sf hud`). |
 | 🛠️ Admin | **`/sf admin` panel** — online-player skin heads → unlock/reset research, give guide, teleport, stats. |
