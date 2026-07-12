@@ -19,7 +19,7 @@ This is the **official v5.0** build of this Slimefun fork, targeting **Paper API
 2. [Quality-of-life & UX](#2-quality-of-life--ux)
    - [Guide: Favorites, Craftable, Recently-Viewed](#guide-favorites-craftable-recently-viewed)
    - [Guide: Research Progress screen](#guide-research-progress-screen)
-   - [Context HUD (action bar)](#context-hud-action-bar)
+   - [Context HUD (action bar + boss bar)](#context-hud-action-bar--boss-bar)
    - [Crafting-time in recipes](#crafting-time-in-recipes)
    - [Per-machine status holograms](#per-machine-status-holograms)
 3. [Admin Panel (`/sf admin`)](#25-admin-panel-sf-admin)
@@ -116,17 +116,20 @@ A new **🧪 Research Progress** button in the guide header (XP-bottle icon) ope
 - **Per category:** every item group with its own `unlocked / total (%)` + mini bar — so you can see
   exactly where your progression stands.
 
-### Context HUD (action bar)
+### Context HUD (action bar + boss bar)
 
-An **automatic action-bar HUD** shows contextual info as you play — no command needed:
+An **automatic HUD** shows contextual info as you play — no command needed:
 
-- **Look at a Slimefun block/machine** → its name, and its energy (`⚡ charge / capacity J`) if it
-  stores power.
-- **Hold a Slimefun item** → its name, and its charge if it's rechargeable.
+- **Look at a Slimefun machine that stores energy** → a **boss bar** appears: it **fills with the
+  machine's charge**, and its title shows `⚙ name · ⚡ charge / capacity J · ⚒ crafting %`. The bar
+  colour reflects state — **red** (out of power), **blue** (crafting), **green** (charged).
+- **Look at any other Slimefun block** → its name in the **action bar**.
+- **Hold a Slimefun item** → its name (and charge, if rechargeable) in the **action bar**.
 - **Nothing relevant** → the HUD stays empty (no spam).
 
-Toggle it for yourself with **`/sf hud`**; server owners can disable it globally — see
-[Configuration](#3-configuration). It's Folia-safe (each player's HUD runs on their own region).
+Toggle it for yourself with **`/sf hud`**; server owners can disable it (or just the boss bar)
+globally — see [Configuration](#3-configuration). It's Folia-safe (each player's HUD runs on their
+own region).
 
 ### Crafting-time in recipes
 
@@ -167,6 +170,7 @@ New / notable options in `config.yml` under `options:`:
 |--------|---------|---------|
 | `machine-holograms` | `true` | Floating status holograms above electric machines. Set `false` to disable (e.g. for performance on very large machine farms). |
 | `hud-enabled` | `true` | The automatic context HUD (looked-at block / held item). Players can also toggle it for themselves with `/sf hud`. |
+| `hud-bossbar` | `true` | Show a boss bar (charge fill + crafting %) when looking at a Slimefun machine that stores energy. If `false`, machines fall back to the action-bar HUD. |
 | `auto-update` | `false` | Auto-updater. Disabled by default on this fork — it is wired to a custom update server that is not yet enabled, so it never phones home. |
 
 Metrics/analytics are **off** on this build (it is a custom fork, not an upstream Slimefun build), so
@@ -193,14 +197,23 @@ there is no bStats phone-home.
 Everything fixed in the v5.0 line:
 
 **Folia region-safety**
+- **Synchronized machine tickers** (Auto-Fisher + every growth accelerator) were dispatched on the
+  region-less global thread → they read/wrote the world off the block's region and would thread-crash
+  on Folia. Now dispatched on the block's own region — these machines actually work on Folia.
 - Research-unlock **fireworks** spawned on the wrong thread → now region-scheduled.
 - **Grappling Hook** scheduled entity work on the region-less global thread → crash spam; now runs
   on the arrow's region, teleports use `teleportAsync`, and its shared maps are concurrent.
 - **Machine status holograms** / `HologramsService` touched ArmorStands off-region (it keyed off
   `Bukkit.isPrimaryThread()`, which is false on Folia region threads) → now checks region ownership
   and schedules onto the hologram's region.
+- **Admin panel** touched a selected player's inventory/location/health from the admin's region → now
+  hops to that player's region for the guide-give + teleport (skin heads show name only).
 - **Shutdown ticker** rescheduled a task while the plugin was disabling → `IllegalPluginAccessException`
   on stop; now skips rescheduling once disabled.
+
+**Gameplay / exploits**
+- **Mystery Box dupe:** spinning against a near-full output slot deposited a partial reward but kept
+  the key, letting players farm free items. Now the spin only proceeds when the reward fully fits.
 
 **Rendering / colors**
 - `/sf help` printed raw `TextComponentImpl{...}` → now rendered.

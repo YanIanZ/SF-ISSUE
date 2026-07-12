@@ -28,7 +28,7 @@ maintained by **iYanZ**.
 | ⏱️ UX | **Crafting-time** shown on every machine recipe in the guide. |
 | 📖 Guide | **Favorites** (Shift+Right-Click), **Craftable-now**, **Recently-Viewed**, and **Research-Progress** views. |
 | 🧪 Guide | **Research Progress** screen — overall completion + per-category bars. |
-| 🔎 HUD | **Automatic context HUD** — action-bar info for the block you look at / item you hold (`/sf hud`). |
+| 🔎 HUD | **Automatic context HUD** — a **boss bar** (charge + crafting %) for the machine you look at, action-bar info for other blocks / held items (`/sf hud`). |
 | 🛠️ Admin | **`/sf admin` panel** — online-player skin heads → unlock/reset research, give guide, teleport, stats. |
 | 🎨 Colors | 100% hex MiniMessage — no legacy `§`/`&` codes anywhere. |
 | 🧵 Platform | Fully **Folia-safe** (region-scheduled world/entity/inventory access) on Paper 26.2. |
