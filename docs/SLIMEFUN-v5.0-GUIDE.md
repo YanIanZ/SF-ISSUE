@@ -16,6 +16,7 @@ This is the **official v5.0** build of this Slimefun fork, targeting **Paper API
    - [Auto-Fisher](#auto-fisher)
    - [Mystery Box](#mystery-box)
    - [Grappling Hook (fixed)](#grappling-hook-fixed)
+   - [Prospector's Ore Scanner](#prospectors-ore-scanner)
 2. [Quality-of-life & UX](#2-quality-of-life--ux)
    - [Guide: Favorites, Craftable, Recently-Viewed](#guide-favorites-craftable-recently-viewed)
    - [Guide: Research Progress screen](#guide-research-progress-screen)
@@ -91,6 +92,22 @@ from fall damage.
 
 > Fixed this release: the hook previously crash-spammed the console on Folia (entity work ran on the
 > wrong region) and its fall-damage immunity never actually triggered. Both are resolved.
+
+### Prospector's Ore Scanner
+
+A rechargeable exploration tool that finds ores for you — no digging blind.
+
+**How to use**
+1. Research **"Prospecting"**, then craft the **Ore Scanner** (a spyglass).
+2. Charge it (it's a rechargeable item), then **right-click** to scan.
+3. Every ore in a cube around you gets a **colour-coded particle ping** (aqua diamond, maroon
+   ancient debris, yellow gold, red redstone, …) so you can see exactly where to dig.
+4. An **action-bar tally** lists what was found, **rarest first**:
+   `⛏ 2 Diamond · 1 Ancient Debris · 14 Iron`.
+
+Each scan costs a little charge and has a short cooldown. The scan radius is a per-item setting
+(default 8, up to 12). Works for all ores — including deepslate and nether variants and ancient
+debris (which merge into one tally line each).
 
 ---
 

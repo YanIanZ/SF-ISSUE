@@ -24,6 +24,7 @@ maintained by **iYanZ**.
 | ⚙️ New machine | **Auto-Fisher** — auto-fishes while touching water; optional cod/salmon bait boosts speed & treasure. |
 | 🎁 New block | **Mystery Box** — insert a Mystery Key, spin for a weighted reward (vanilla / Slimefun / jackpot). |
 | 🪝 Gadget | **Grappling Hook** — fixed on Folia + fall-damage immunity now actually works. |
+| ⛏️ Tool | **Prospector's Ore Scanner** — right-click to ping nearby ores with colour-coded particles + a rarest-first tally. |
 | 🖥️ UX | **Per-machine status holograms** (`⚙ Crafting X%` / `⛔ Not enough energy`), toggleable. |
 | ⏱️ UX | **Crafting-time** shown on every machine recipe in the guide. |
 | 📖 Guide | **Favorites** (Shift+Right-Click), **Craftable-now**, **Recently-Viewed**, and **Research-Progress** views. |
