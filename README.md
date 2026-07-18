@@ -15,6 +15,14 @@ maintained by **iYanZ**.
   use it, config options, and the full fix changelog.
 - **[Folia notes](docs/FOLIA.md)** — Folia region-safety rules this fork follows.
 
+### 🧩 Addons
+
+- **[CookingExpansion — Skill-Based Cooking](docs/COOKING-EXPANSION.md)** — three cooking stations
+  with real-time minigames (Stove · heat + flip, Oven · bake curve, Prep Station · chop combo),
+  27 items, quality tiers that drive food + potion buffs.
+- **[MiningExpansion — Deep Earth Mining](docs/MINING-EXPANSION.md)** — tiered ores, geode cracking,
+  timed gem cutting (Rough/Fine/Flawless), gem sockets, and crystal gear.
+
 ---
 
 ## ✨ What's new in v5.1 (highlights)
